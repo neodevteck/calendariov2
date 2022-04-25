@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
+import Mes from './components/Mes';
+import dayjs from 'dayjs';
 
+import { getMonth } from './util/util';
+//console.table(getMonth());
 function App() {
+  console.log('APP');
+  const [mesActual, setMesActual] = useState(getMonth);
+  const [indiceMes, setIndiceMes] = useState(dayjs().locale('es').month());
+
+  useEffect(() => {
+    setMesActual(getMonth(indiceMes));
+  }, [indiceMes]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <div className='h-screen flex flex-col'>
+        <Header indiceMes={indiceMes} setIndiceMes={setIndiceMes} />
+        <div className='flex flex-1'>
+          <Sidebar />
+          <Mes mes={mesActual} />
+        </div>
+      </div>
+    </React.Fragment>
   );
 }
-
 export default App;
